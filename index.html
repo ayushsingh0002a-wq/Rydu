@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Big Small PRO</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f0f0f;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px orange;
+}
+
+h1 {
+    color: orange;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#btn1 { background: orange; }
+#btn2 { background: green; color: white; }
+#btn3 { background: red; color: white; }
+
+.result-box {
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+.history {
+    margin-top: 20px;
+    text-align: left;
+    background: #111;
+    padding: 10px;
+    border-radius: 10px;
+    height: 150px;
+    overflow-y: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>BIG / SMALL PRO 🔥</h1>
+
+    <button id="btn1" onclick="predict()">🎲 Predict</button>
+    <button id="btn2" onclick="autoPlay()">🔁 Auto</button>
+    <button id="btn3" onclick="stopAuto()">⛔ Stop</button>
+
+    <div class="result-box">
+        <h2 id="number">Number: -</h2>
+        <h2 id="result">Result: -</h2>
+    </div>
+
+    <div class="history" id="history">
+        <b>History:</b><br>
+    </div>
+</div>
+
+<script>
+let interval;
+
+function predict() {
+    fetch("https://www.randomnumberapi.com/api/v1.0/random?min=0&max=9&count=1")
+    .then(res => res.json())
+    .then(data => {
+        let num = data[0];
+        let res = (num <= 4) ? "SMALL" : "BIG";
+
+        document.getElementById("number").innerText = "Number: " + num;
+        document.getElementById("result").innerText = "Result: " + res;
+
+        let hist = document.getElementById("history");
+        hist.innerHTML += num + " → " + res + "<br>";
+    });
+}
+
+function autoPlay() {
+    if (interval) return;
+    interval = setInterval(predict, 1500);
+}
+
+function stopAuto() {
+    clearInterval(interval);
+    interval = null;
+}
+</script>
+
+</body>
+</html>
